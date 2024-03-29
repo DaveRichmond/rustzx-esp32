@@ -4,37 +4,41 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-esp32-hal = { version = "0.18.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
-esp32s2-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
-esp32s3-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
-esp32c3-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
-esp32c6-hal = { version = "0.8.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+#esp32-hal = { version = "0.18.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+#esp32s2-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+#esp32s3-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+#esp32c3-hal = { version = "0.15.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+#esp32c6-hal = { version = "0.8.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
 #esp32h2-hal = { version = "0.5.0", optional = true, default-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
+esp-hal = { version = "0.16.1", optional = true, deffault-features = false, features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"]}
 
 embassy-executor = { version = "0.5.0", package = "embassy-executor", features = ["nightly", "integrated-timers"] }
 embedded-graphics = "0.8.0"
+embedded-hal-bus = "0.1.0"
 embedded-io-async  = "0.6.1"
 embassy-time = { version = "0.3.0" }
 # hal = { package = "esp32c6-hal", version = "0.7.0" , features = ["embassy", "async", "embassy-time-timg0", "rt", "embassy-executor-thread"] }
 log = "0.4"
-mipidsi = "0.7.1"
+mipidsi = { git = "https://github.com/almindor/mipidsi.git" } # api has updated since latest release, an incompatible with latest display-interface-spi
 rustzx-core = {  git = "https://github.com/georgik/rustzx.git", branch = "feature/performance-bounding-box", features = ["embedded-roms"] }
-esp-display-interface-spi-dma = { version = "0.1.0" }
+esp-display-interface-spi-dma = { git = "https://github.com/DaveRichmond/esp-display-interface-spi-dma" }
+display-interface-spi = { version = "0.5" }
 
-esp-bsp = { version = "0.2.0" }
+esp-bsp = { git = "https://github.com/DaveRichmond/esp-bsp-rs" }
 graphics = { path = "../graphics" }
 keyboard-pipe = { path = "../keyboard-pipe" }
 usb-zx = { path = "../usb-zx" }
 
 [features]
 # default = [ "esp32" ]
-esp32 =   [ "esp32-hal", "esp-display-interface-spi-dma/esp32" ]
-esp32s2 = [ "esp32s2-hal", "esp-display-interface-spi-dma/esp32s2" ]
-esp32s3 = [ "esp32s3-hal", "esp-display-interface-spi-dma/esp32s3" ]
-esp32c3 = [ "esp32c3-hal", "esp-display-interface-spi-dma/esp32c3" ]
-esp32c6 = [ "esp32c6-hal", "esp-display-interface-spi-dma/esp32c6" ]
+esp32 =   [ "esp-hal/esp32", "esp-display-interface-spi-dma/esp32" ]
+esp32s2 = [ "esp-hal/esp32s2", "esp-display-interface-spi-dma/esp32s2" ]
+esp32s3 = [ "esp-hal/esp32s3", "esp-display-interface-spi-dma/esp32s3" ]
+esp32c3 = [ "esp-hal/esp32c3", "esp-display-interface-spi-dma/esp32c3" ]
+esp32c6 = [ "esp-hal/esp32c6", "esp-display-interface-spi-dma/esp32c6" ]
 #esp32h2 = [ "esp32h2-hal", "esp-display-interface-spi-dma/esp32h2" ]
 
+esp32_cyd = [ "esp32" ]
 esp32_c6_devkit_c1 = [ "esp32c6" ]
-esp32_s3_box = [ "esp32s3", "esp32s3-hal/opsram-8m" ]
-m5stack_cores3 = [ "esp32s3", "esp32s3-hal/psram-8m" ]
+esp32_s3_box = [ "esp32s3", "esp-hal/opsram-8m" ]
+m5stack_cores3 = [ "esp32s3", "esp-hal/psram-8m" ]
