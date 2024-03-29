@@ -1,0 +1,52 @@
+[package]
+name = "rustzx-esp32-cyd"
+version = "0.0.1"
+authors = ["David Richmond <d@verichmond.dev>"]
+edition = "2021"
+license = "MIT"
+resolver = "2"
+rust-version = "1.71"
+
+[profile.release]
+opt-level = 2
+codegen-units = 1
+debug = 2
+debug-assertions = false
+lto = "fat"
+overflow-checks = false
+
+[profile.dev]
+debug = true
+opt-level = "s"
+
+[dependencies]
+esp-hal = { version = "0.16.1", features = ["esp32", "embassy", "async", "embassy-time-driver", "embassy-time-timg0", "rt", "embassy-executor-thread" ] }
+esp-backtrace = { version = "0.11.1", features = ["esp32", "panic-handler", "exception-handler", "println"] }
+esp-println = { version = "0.9.1", features = ["esp32", "uart", "log"] }
+esp-bsp = { git = "https://github.com/DaveRichmond/esp-bsp-rs" }
+
+critical-section = "1.1.2"
+esp-alloc = "0.3.0"
+embassy-sync = "0.5.0"
+embassy-futures = "0.1.0"
+embassy-executor = { version = "0.5.0", package="embassy-executor", features = ["nightly", "integrated-timers"] }
+embassy-time = "0.3.0"
+embedded-graphics = "0.8.0"
+embedded-hal = "1.0.0"
+embedded-hal-bus = "0.1.0"
+embedded-graphics-framebuf = {  git = "https://github.com/georgik/embedded-graphics-framebuf.git", branch = "feature/embedded-graphics-0.8" }
+log = "0.4"
+display-interface = "0.4"
+mipidsi = {  git = "https://github.com/almindor/mipidsi.git" }
+shared-bus = "0.3.1"
+display-interface-spi = { version = "0.5.0" }
+rustzx-utils = { git = "https://github.com/georgik/rustzx.git", branch = "feature/performance-bounding-box" }
+rustzx-core = {  git = "https://github.com/georgik/rustzx.git", branch = "feature/performance-bounding-box", features = ["embedded-roms"] }
+static_cell = { version = "2.0.0", features = ["nightly"] }
+graphics = { path = "../graphics" }
+uart-keyboard = { path = "../uart-keyboard", features = ["esp32"] }
+esp-now-keyboard = { path = "../esp-now-keyboard", features = [ "esp32" ] }
+
+emulator = { path = "../emulator", features = ["esp32_cyd"] }
+esp-wifi = { version = "0.4.0", features = ["esp32"] }
+pc-keyboard = "0.7.0"
