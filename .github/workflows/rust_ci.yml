@@ -19,7 +19,8 @@ jobs:
       fail-fast: false
       matrix:
         board:
-          - name: m5stack-core3
+          - name: m5stack-cores3
+          - name: m5stack-cores3-ps2-keyboard
           - name: esp32-s3-box
           - name: esp32-cyd
           - name: esp32-c3-devkit-rust
