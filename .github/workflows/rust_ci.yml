@@ -44,5 +44,5 @@ jobs:
         uses: Swatinem/rust-cache@v2
       - name: Run command
         run: |
-          cd ${ matrix.board.name }
+          cd ${{ matrix.board.name }}
           cargo ${{ matrix.action.command }} ${{ matrix.action.args }}
