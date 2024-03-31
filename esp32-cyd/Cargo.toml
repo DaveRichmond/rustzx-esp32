@@ -20,10 +20,10 @@ debug = true
 opt-level = "s"
 
 [dependencies]
-esp-hal = { version = "0.16.1", features = ["esp32", "embassy", "async", "embassy-time-driver", "embassy-time-timg0", "rt", "embassy-executor-thread" ] }
+esp-hal = { version = "0.16.1", features = ["esp32", "psram-4m", "embassy", "async", "embassy-time-driver", "embassy-time-timg0", "rt", "embassy-executor-thread" ] }
 esp-backtrace = { version = "0.11.1", features = ["esp32", "panic-handler", "exception-handler", "println"] }
 esp-println = { version = "0.9.1", features = ["esp32", "uart", "log"] }
-esp-bsp = { git = "https://github.com/DaveRichmond/esp-bsp-rs" }
+esp-bsp = { git = "https://github.com/DaveRichmond/esp-bsp-rs/", branch="test/wemos-d32pro" }
 
 critical-section = "1.1.2"
 esp-alloc = "0.3.0"

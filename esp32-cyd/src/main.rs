@@ -32,6 +32,7 @@ use esp_hal::{
     embassy,
     clock::ClockControl,
     gpio::{ self, IO },
+    psram,
     spi::{ master::Spi, SpiMode },
     timer::TimerGroup,
     peripherals::{ Peripherals, UART1 },
@@ -52,11 +53,8 @@ use log::{info, error, debug};
 static ALLOCATOR : esp_alloc::EspHeap = esp_alloc::EspHeap::empty();
 
 fn init_heap(){
-    const HEAP_SIZE : usize = 160 * 1024;
-    static mut HEAP : MaybeUninit<[u8; HEAP_SIZE]> = MaybeUninit::uninit();
-
     unsafe {
-        ALLOCATOR.init(HEAP.as_mut_ptr() as *mut u8, HEAP_SIZE);
+        ALLOCATOR.init(psram::psram_vaddr_start() as *mut u8, psram::PSRAM_BYTES);
     }
 }
 
@@ -122,9 +120,10 @@ fn handle_key_event<H: Host>(key : pc_keyboard::KeyCode, state : pc_keyboard::Ke
 
  #[main]
  async fn main(spawner : Spawner) -> ! {
+    let peripherals = Peripherals::take();
+    psram::init_psram(peripherals.PSRAM);
     init_heap();
 
-    let peripherals = Peripherals::take();
     let system = peripherals.SYSTEM.split();
     let clocks = ClockControl::boot_defaults(system.clock_control).freeze();
     let io = IO::new(peripherals.GPIO, peripherals.IO_MUX);
@@ -135,9 +134,9 @@ fn handle_key_event<H: Host>(key : pc_keyboard::KeyCode, state : pc_keyboard::Ke
     let mut delay = Delay::new(&clocks);
 
     let (lcd_sclk, lcd_mosi, lcd_cs, lcd_miso, lcd_dc, mut lcd_backlight, lcd_reset) = lcd_gpios!(BoardType::ESP32CheapYellowDisplay, io);
-    let serial_tx = io.pins.gpio22;
-    let serial_rx = io.pins.gpio27;
-    let mut led = io.pins.gpio16.into_push_pull_output();
+    let serial_tx = io.pins.gpio25;
+    let serial_rx = io.pins.gpio26;
+    //let mut led = io.pins.gpio16.into_push_pull_output();
 
     esp_println::logger::init_logger_from_env();
 
@@ -255,6 +254,6 @@ fn handle_key_event<H: Host>(key : pc_keyboard::KeyCode, state : pc_keyboard::Ke
             }
         }
 
-        led.toggle().expect("Failed to toggle led");
+        //led.toggle().expect("Failed to toggle led");
     }
  }
